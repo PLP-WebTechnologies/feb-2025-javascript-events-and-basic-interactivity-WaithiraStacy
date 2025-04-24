@@ -1,0 +1,212 @@
+index.html
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive JavaScript Playground</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Welcome to the Ultimate JavaScript Playground! 🎉</h1>
+
+    <!-- Event Handling -->
+    <button id="clickButton">Click Me!</button>
+    <button id="hoverButton">Hover over me!</button>
+
+    <!-- Image Gallery -->
+    <div id="imageGallery">
+        <img id="currentImage" src="image1.jpg" alt="image gallery" />
+        <button id="nextBtn">Next</button>
+        <button id="prevBtn">Previous</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab" onclick="showTab(0)">Tab 1</button>
+        <button class="tab" onclick="showTab(1)">Tab 2</button>
+    </div>
+
+    <div class="tab-content" id="tab1">Content for Tab 1</div>
+    <div class="tab-content" id="tab2">Content for Tab 2</div>
+
+    <!-- Form Validation -->
+    <form id="myForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required placeholder="Username">
+        <br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required placeholder="Email">
+        <br>
+
+        <label for="password">Password (min 8 characters):</label>
+        <input type="password" id="password" required placeholder="Password">
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="feedback"></p>
+
+    <script src="script.js"></script>
+</body>
+</html>
+style.css
+css
+Copy
+Edit
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#imageGallery {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#feedback {
+    font-size: 14px;
+    color: red;
+}
+
+input:focus {
+    border-color: #4CAF50;
+}
+
+.fade-in {
+    animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+script.js
+js
+Copy
+Edit
+// Button Click Event
+document.getElementById('clickButton').addEventListener('click', () => {
+    alert('Button clicked!');
+    document.getElementById('clickButton').innerText = "You clicked me!";
+});
+
+// Hover Effect Event
+document.getElementById('hoverButton').addEventListener('mouseenter', () => {
+    document.getElementById('hoverButton').style.backgroundColor = 'blue';
+});
+document.getElementById('hoverButton').addEventListener('mouseleave', () => {
+    document.getElementById('hoverButton').style.backgroundColor = '';
+});
+
+// Image Gallery Slideshow
+const images = ["image1.jpg", "image2.jpg", "image3.jpg"];
+let currentIndex = 0;
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    document.getElementById('currentImage').src = images[currentIndex];
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    document.getElementById('currentImage').src = images[currentIndex];
+});
+
+// Tabs
+function showTab(tabIndex) {
+    const allTabs = document.querySelectorAll('.tab-content');
+    allTabs.forEach((tab, index) => {
+        tab.style.display = (index === tabIndex) ? 'block' : 'none';
+    });
+}
+
+// Form Validation
+document.getElementById('myForm').addEventListener('submit', (event) => {
+    let isValid = true;
+
+    // Username Validation
+    const usernameField = document.getElementById('username');
+    if (!usernameField.value) {
+        alert('Username is required!');
+        isValid = false;
+    }
+
+    // Email Validation
+    const emailField = document.getElementById('email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailField.value)) {
+        alert('Please enter a valid email address!');
+        isValid = false;
+    }
+
+    // Password Validation
+    const passwordField = document.getElementById('password');
+    if (passwordField.value.length < 8) {
+        alert('Password must be at least 8 characters long!');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        event.preventDefault();
+    }
+});
+
+// Real-Time Email Validation
+document.getElementById('email').addEventListener('input', (event) => {
+    const emailField = event.target;
+    const feedback = document.getElementById('feedback');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (emailRegex.test(emailField.value)) {
+        feedback.textContent = 'Valid email';
+        feedback.style.color = 'green';
+    } else {
+        feedback.textContent = 'Invalid email';
+        feedback.style.color = 'red';
+    }
+});
